@@ -4,9 +4,10 @@ Une todo: procesador, memoria interna, bus, mapa de memoria, UART, pines y bitst
 
 ## Integrantes
 
--
--
--
+- Andres Felipe Sanchez Rodriguez
+- Daniel Galeano Herrera
+- Nirvana 
+- Pablo
 
 ## Qué hace este grupo
 
