@@ -4,7 +4,7 @@ Controladores de las memorias externas de la consola y la persistencia de los r�
 
 ## Integrantes
 
-- Wilman Wilches
+- Wilman Santiago Felipe Wilches Cristiano
 - David Eduardo Quiroga Vega
 - David Felipe Ibagué Arévalo
 
