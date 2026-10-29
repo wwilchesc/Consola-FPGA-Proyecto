@@ -1,0 +1,504 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" agent="generado" version="24.0.0" type="device">
+  <diagram id="pag0" name="Diagrama de bloques">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1590" pageHeight="1010" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c3" value="&lt;b style=&quot;font-size:24px&quot;&gt;Grupo 1 · Contexto y diagrama de bloques de la memoria externa&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;color:#555&quot;&gt;Qué se guarda en cada memoria y qué bloques tienen los controladores.&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="&lt;b style=&quot;font-size:14px&quot;&gt;a) Qué se guarda dónde&lt;/b&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="600" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="&lt;table style=&quot;border-collapse:collapse;font-size:11px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:190px;&quot;&gt;Memoria&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:360px;&quot;&gt;Qué guarda&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:90px;&quot;&gt;Tipo&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:300px;&quot;&gt;Velocidad&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;BRAM interna&lt;/b&gt; (no es de G3)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Programa, variables, pila (32 KB) y framebuffer (6 KB)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Volátil&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Rápida: 1 ciclo&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;SPI-RAM 23LC1024&lt;/b&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Memoria de trabajo: copia de los gráficos y autotest&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Volátil&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≈ 1,5 MB/s a 12,5 MHz&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;Flash SPI&lt;/b&gt; de la tarjeta&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Bitstream (desde 0) y gráficos del menú (desde 0x400000)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;No volátil&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Lectura rápida; borrar 4 KB antes de escribir&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;EEPROM 24LC256&lt;/b&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Tabla de récords (desde 0x0000)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;No volátil&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Lenta: 100 kHz, 5 ms por página escrita; 1 millón de ciclos&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="940" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" value="&lt;b&gt;Regla&lt;/b&gt;: lo rápido va adentro (BRAM); lo grande o permanente va afuera, detrás de controladores de pocos pines. Las memorias externas solo se tocan al arrancar y al guardar un récord, así nunca frenan el juego." style="rounded=1;arcSize=3;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=8;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="120" width="540" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" value="&lt;b style=&quot;font-size:14px&quot;&gt;b) Bloques de los controladores (HW) y conexión externa&lt;/b&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="700" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" value="&lt;b&gt;Controladores de memoria&lt;/b&gt; · Grupo 1 · Memoria externa" style="rounded=1;arcSize=2;html=1;align=left;verticalAlign=top;fillColor=none;strokeColor=#9673a6;dashed=1;strokeWidth=2;spacing=8;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="290" y="340" width="860" height="520" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" value="&lt;b&gt;FemtoRV32&lt;/b&gt;&lt;br&gt;+ bus y decodificador (G6)&lt;br&gt;cs: 0x41, 0x42, 0x46" style="rounded=1;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="20" y="520" width="190" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c10" value="&lt;b&gt;Registros SPI-RAM&lt;/b&gt; (0x41)&lt;br&gt;CONTROL · ADDR · WDATA · RDATA · STATUS · CLK_DIV" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="310" y="380" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c11" value="&lt;b&gt;Motor SPI modo 0&lt;/b&gt;&lt;br&gt;CS, comando 8 b, dirección 24 b, dato 8 b; SCK = 50 MHz / (2·(CLK_DIV+1))" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="630" y="380" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" value="&lt;b&gt;SPI-RAM 23LC1024&lt;/b&gt;&lt;br&gt;128 KB, 2,5–5,5 V" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#eceff1;strokeColor=#455a64;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="385" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" value="&lt;b&gt;Registros Flash&lt;/b&gt; (0x42)&lt;br&gt;mismos registros + comandos de borrado y programación" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="310" y="520" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" value="&lt;b&gt;Motor SPI modo 0&lt;/b&gt;&lt;br&gt;mismo módulo perip_spi; lee el estado WIP de la Flash" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="630" y="520" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c15" value="&lt;b&gt;Flash SPI&lt;/b&gt; de la tarjeta&lt;br&gt;bitstream + gráficos" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#eceff1;strokeColor=#455a64;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="525" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c16" value="&lt;b&gt;Registros I2C&lt;/b&gt; (0x46)&lt;br&gt;CONTROL · TX_DATA · RX_DATA · STATUS · CLK_DIV" style="rounded=1;arcSize=8;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="310" y="680" width="190" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="c17" value="&lt;b&gt;Motor I2C maestro&lt;/b&gt;&lt;br&gt;START, STOP, escribir byte + leer ACK, leer byte + dar ACK/NACK; SCL = 50 MHz / (4·(CLK_DIV+1))" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="630" y="670" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="c18" value="&lt;b&gt;Salidas open-drain&lt;/b&gt;&lt;br&gt;SDA y SCL: 0 o alta impedancia" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="910" y="690" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="c19" value="&lt;b&gt;EEPROM 24LC256&lt;/b&gt;&lt;br&gt;32 KB, dirección 0x50" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#eceff1;strokeColor=#455a64;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="685" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="c20" value="Pull-ups 4,7 kΩ a 3,3 V" style="rounded=0;html=1;whiteSpace=wrap;fillColor=#eceff1;strokeColor=#455a64;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="790" width="170" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" value="d_in, addr, wr, rd" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" edge="1" parent="1" source="c9" target="c10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="c9" target="c13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c23" value="d_out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.7;entryX=0;entryY=0.5;" edge="1" parent="1" source="c9" target="c16">
+          <mxGeometry relative="1" as="geometry" x="0.3" />
+        </mxCell>
+        <mxCell id="c24" value="orden" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35;entryX=0;entryY=0.35;" edge="1" parent="1" source="c10" target="c11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c25" value="BUSY, DONE, dato" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;dashed=1;strokeColor=#888888;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="c11" target="c10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c26" value="orden" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35;entryX=0;entryY=0.35;" edge="1" parent="1" source="c13" target="c14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c27" value="BUSY, DONE, dato" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;dashed=1;strokeColor=#888888;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="c14" target="c13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c28" value="orden" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.35;entryX=0;entryY=0.35;" edge="1" parent="1" source="c16" target="c17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c29" value="BUSY, DONE, dato" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;dashed=1;strokeColor=#888888;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="c17" target="c16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c30" value="&lt;b&gt;SCK, MOSI, MISO, CS (4)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;startArrow=block;startFill=1;" edge="1" parent="1" source="c11" target="c12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c31" value="&lt;b&gt;SCK, MOSI, MISO, CS, WP, HOLD (6)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;startArrow=block;startFill=1;" edge="1" parent="1" source="c14" target="c15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="c17" target="c18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c33" value="&lt;b&gt;SCL, SDA (2)&lt;/b&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;endArrow=block;endFill=1;strokeColor=#444444;fontSize=10;fontColor=#1a5276;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;entryX=0;entryY=0.5;startArrow=block;startFill=1;" edge="1" parent="1" source="c18" target="c19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c34" value="" style="html=1;endArrow=none;strokeColor=#d32f2f;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="c20" target="c19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c35" value="&lt;b style=&quot;font-size:14px&quot;&gt;Ideas clave&lt;/b&gt;&lt;br&gt;• Un solo módulo SPI (perip_spi) se instancia dos veces: SPI-RAM y Flash. Solo cambian los pines y los comandos que usa el software.&lt;br&gt;• La CPU nunca mueve SCK ni SCL bit a bit: escribe una orden y sondea BUSY. Un byte SPI tarda ≈ 0,7 µs; un byte I2C ≈ 90 µs.&lt;br&gt;• I2C es open-drain: el maestro solo pone 0 o suelta la línea; la resistencia pull-up da el 1. Así la EEPROM puede responder con ACK por la misma línea." style="rounded=1;arcSize=3;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=8;fontSize=12;fillColor=#e1d5e7;strokeColor=#9673a6;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="880" width="1510" height="90" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="pag1" name="Señales y tiempos (hojas de datos)">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1580" pageHeight="680" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c3" value="&lt;b style=&quot;font-size:24px&quot;&gt;Grupo 1 · Señales entre la FPGA y cada memoria, con los tiempos de las hojas de datos&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;color:#555&quot;&gt;Dirección de cada señal, quién la genera y los valores que el controlador debe respetar.&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="&lt;table style=&quot;border-collapse:collapse;font-size:12px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:190px;&quot;&gt;Chip&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:130px;&quot;&gt;Señal&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:130px;&quot;&gt;Sentido&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:640px;&quot;&gt;Función y tiempos&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:140px;&quot;&gt;Pin del chip&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;SPI-RAM 23LC1024&lt;/b&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SCK&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;FPGA → memoria&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Reloj; máx. 20 MHz (usamos 12,5 MHz)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 6&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SI (MOSI)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;FPGA → memoria&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Comando, dirección (24 bits, solo 17 útiles) y dato; la memoria lo lee en el flanco de subida&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 5&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SO (MISO)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;memoria → FPGA&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Dato leído; la memoria lo cambia después del flanco de bajada&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 2&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;CS&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;FPGA → memoria&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Activo en bajo; un CS bajo = una transacción&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 1&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;HOLD, SIO2&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;—&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;A 3,3 V (no se usan)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pines 7 y 3&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;Flash SPI&lt;/b&gt; (tarjeta, 64 Mbit)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SCK, MOSI, MISO, CS&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;igual que arriba&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Comandos 0x9F, 0x03, 0x06, 0x20, 0x02, 0x05&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;En la tarjeta&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;WP, HOLD&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;FPGA → Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;En 1 (sin protección ni pausa)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;En la tarjeta&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;b&gt;EEPROM 24LC256&lt;/b&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SCL&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;FPGA → EEPROM&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Reloj I2C; máx. 400 kHz (usamos 100 kHz); open-drain + pull-up 4,7 kΩ&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 6&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SDA&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;bidireccional&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Dirección, datos y ACK por la misma línea; open-drain + pull-up 4,7 kΩ&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pin 5&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;A0, A1, A2, WP&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;—&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;A GND: dirección 1010 000 = 0x50; escritura permitida&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Pines 1, 2, 3, 7&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="1240" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="&lt;b style=&quot;font-size:14px&quot;&gt;Valores de las hojas de datos que usa el diseño&lt;/b&gt;&lt;table style=&quot;border-collapse:collapse;font-size:12px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:100px;&quot;&gt;Chip&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:260px;&quot;&gt;Parámetro&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:160px;&quot;&gt;Hoja de datos&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:500px;&quot;&gt;Cómo lo cumple el controlador&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;23LC1024&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Frecuencia de SCK&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≤ 20 MHz&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;CLK_DIV = 1 → 12,5 MHz&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;23LC1024&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Setup / hold del dato (TSU / THD)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≥ 10 ns / ≥ 10 ns&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Medio periodo de SCK = 40 ns&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;23LC1024&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Setup / hold de CS (TCSS / TCSH)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≥ 25 ns / ≥ 50 ns&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Esperar 2–3 ciclos de 50 MHz antes y después de SCK&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;23LC1024&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Modo al encender&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Secuencial&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;La dirección avanza sola: se pueden leer muchos bytes con un solo comando&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;24LC256&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Frecuencia de SCL&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≤ 400 kHz&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;CLK_DIV = 124 → 100 kHz&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;24LC256&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Página de escritura&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;64 bytes&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Una escritura no cruza una página&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;24LC256&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Tiempo de escritura&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;≤ 5 ms&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Sondeo de ACK hasta que responda&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="1240" height="260" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="pag2" name="Diagramas de tiempos">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="880" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="c3" value="&lt;b style=&quot;font-size:24px&quot;&gt;Grupo 1 · Protocolos SPI (modo 0) e I2C, con diagramas de tiempos&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;color:#555&quot;&gt;Ejemplos reales de la consola: leer un byte de la SPI-RAM y escribir un byte en la EEPROM.&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1500" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" value="&lt;b style=&quot;font-size:14px&quot;&gt;a) SPI modo 0: leer 1 byte de la SPI-RAM (comando 0x03 + dirección de 24 bits)&lt;/b&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" value="&lt;b&gt;CS&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="126" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" value="&lt;b&gt;SCK&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="186" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" value="&lt;b&gt;MOSI&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="246" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" value="&lt;b&gt;MISO&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="301" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" value="" style="html=1;endArrow=none;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="128" as="sourcePoint" />
+            <mxPoint x="994" y="128" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="220" y="128" />
+              <mxPoint x="220" y="152" />
+              <mxPoint x="974" y="152" />
+              <mxPoint x="974" y="128" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c10" value="" style="html=1;endArrow=none;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="212" as="sourcePoint" />
+            <mxPoint x="994" y="212" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="237" y="212" />
+              <mxPoint x="237" y="188" />
+              <mxPoint x="254" y="188" />
+              <mxPoint x="254" y="212" />
+              <mxPoint x="271" y="212" />
+              <mxPoint x="271" y="188" />
+              <mxPoint x="288" y="188" />
+              <mxPoint x="288" y="212" />
+              <mxPoint x="305" y="212" />
+              <mxPoint x="305" y="188" />
+              <mxPoint x="322" y="188" />
+              <mxPoint x="322" y="212" />
+              <mxPoint x="339" y="212" />
+              <mxPoint x="339" y="188" />
+              <mxPoint x="356" y="188" />
+              <mxPoint x="356" y="212" />
+              <mxPoint x="373" y="212" />
+              <mxPoint x="373" y="188" />
+              <mxPoint x="390" y="188" />
+              <mxPoint x="390" y="212" />
+              <mxPoint x="407" y="212" />
+              <mxPoint x="407" y="188" />
+              <mxPoint x="424" y="188" />
+              <mxPoint x="424" y="212" />
+              <mxPoint x="441" y="212" />
+              <mxPoint x="441" y="188" />
+              <mxPoint x="458" y="188" />
+              <mxPoint x="458" y="212" />
+              <mxPoint x="475" y="212" />
+              <mxPoint x="475" y="188" />
+              <mxPoint x="492" y="188" />
+              <mxPoint x="492" y="212" />
+              <mxPoint x="702" y="212" />
+              <mxPoint x="719" y="212" />
+              <mxPoint x="719" y="188" />
+              <mxPoint x="736" y="188" />
+              <mxPoint x="736" y="212" />
+              <mxPoint x="753" y="212" />
+              <mxPoint x="753" y="188" />
+              <mxPoint x="770" y="188" />
+              <mxPoint x="770" y="212" />
+              <mxPoint x="787" y="212" />
+              <mxPoint x="787" y="188" />
+              <mxPoint x="804" y="188" />
+              <mxPoint x="804" y="212" />
+              <mxPoint x="821" y="212" />
+              <mxPoint x="821" y="188" />
+              <mxPoint x="838" y="188" />
+              <mxPoint x="838" y="212" />
+              <mxPoint x="855" y="212" />
+              <mxPoint x="855" y="188" />
+              <mxPoint x="872" y="188" />
+              <mxPoint x="872" y="212" />
+              <mxPoint x="889" y="212" />
+              <mxPoint x="889" y="188" />
+              <mxPoint x="906" y="188" />
+              <mxPoint x="906" y="212" />
+              <mxPoint x="923" y="212" />
+              <mxPoint x="923" y="188" />
+              <mxPoint x="940" y="188" />
+              <mxPoint x="940" y="212" />
+              <mxPoint x="957" y="212" />
+              <mxPoint x="957" y="188" />
+              <mxPoint x="974" y="188" />
+              <mxPoint x="974" y="212" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c11" value="24 pulsos" style="text;html=1;fontSize=10;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="562" y="192" width="70" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c12" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="220" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c13" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="254" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c14" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="288" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c15" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="322" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c16" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="356" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c17" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="390" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c18" value="1" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="424" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c19" value="1" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="458" y="247" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c20" value="A23–A16" style="rounded=0;html=1;fontSize=9;fillColor=#f3e5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="492" y="247" width="70" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" value="A15–A8" style="rounded=0;html=1;fontSize=9;fillColor=#f3e5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="562" y="247" width="70" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" value="A7–A0" style="rounded=0;html=1;fontSize=9;fillColor=#f3e5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="632" y="247" width="70" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c23" value="no importa" style="rounded=0;html=1;fontSize=9;fillColor=#f5f5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="702" y="247" width="272" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c24" value="alta impedancia (la memoria no habla)" style="rounded=0;html=1;fontSize=9;fillColor=#f5f5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="220" y="302" width="482" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c25" value="D7" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="702" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c26" value="D6" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="736" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c27" value="D5" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="770" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c28" value="D4" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="804" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c29" value="D3" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="838" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c30" value="D2" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="872" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c31" value="D1" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="906" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c32" value="D0" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="940" y="302" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c33" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="132" as="sourcePoint" />
+            <mxPoint x="220" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c34" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="492" y="132" as="sourcePoint" />
+            <mxPoint x="492" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c35" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="702" y="132" as="sourcePoint" />
+            <mxPoint x="702" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c36" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="974" y="132" as="sourcePoint" />
+            <mxPoint x="974" y="335" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c37" value="CS baja: empieza la transacción" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="223" y="340" width="300" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c38" value="comando 0x03 = READ" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="223" y="356" width="300" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c39" value="dirección de 24 bits (MSB primero)" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="495" y="340" width="220" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c40" value="la memoria saca el dato" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="705" y="340" width="200" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c41" value="CS sube: fin" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="977" y="340" width="120" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c42" value="Modo 0 (CPOL = 0, CPHA = 0): SCK en reposo vale 0 · el maestro cambia MOSI con SCK en bajo · ambos leen en el flanco de subida" style="text;html=1;fontSize=11;align=left;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="112" width="900" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c43" value="&lt;table style=&quot;border-collapse:collapse;font-size:11px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:150px;&quot;&gt;Comando&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:130px;&quot;&gt;Memoria&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:170px;&quot;&gt;Bytes que siguen&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:320px;&quot;&gt;Para qué&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x03 READ&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SPI-RAM y Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;dirección 3 B, luego datos&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Leer (secuencial: la dirección avanza sola)&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x02 WRITE / PROGRAM&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SPI-RAM / Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;dirección 3 B + datos&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Escribir (Flash: máx. 256 B por página, antes WREN)&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x9F JEDEC ID&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;3 B de respuesta&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Saber si la Flash responde (autotest)&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x06 WREN&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;—&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Habilitar escritura&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x20 SECTOR ERASE&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;dirección 3 B&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Borrar 4 KB (queda en 0xFF)&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;0x05 RDSR&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Flash&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;1 B de estado&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Bit 0 WIP = 1 mientras borra o programa&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="110" width="520" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="c44" value="&lt;b style=&quot;font-size:14px&quot;&gt;b) I2C: escribir 1 byte en la EEPROM 24LC256 (dirección 0x50, escritura)&lt;/b&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="900" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c45" value="&lt;b&gt;SCL&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="456" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c46" value="&lt;b&gt;SDA&lt;/b&gt;" style="text;html=1;align=right;verticalAlign=middle;fontSize=13;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="526" width="150" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="c47" value="" style="html=1;endArrow=none;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="458" as="sourcePoint" />
+            <mxPoint x="856" y="458" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="240" y="458" />
+              <mxPoint x="240" y="482" />
+              <mxPoint x="257" y="482" />
+              <mxPoint x="257" y="458" />
+              <mxPoint x="274" y="458" />
+              <mxPoint x="274" y="482" />
+              <mxPoint x="291" y="482" />
+              <mxPoint x="291" y="458" />
+              <mxPoint x="308" y="458" />
+              <mxPoint x="308" y="482" />
+              <mxPoint x="325" y="482" />
+              <mxPoint x="325" y="458" />
+              <mxPoint x="342" y="458" />
+              <mxPoint x="342" y="482" />
+              <mxPoint x="359" y="482" />
+              <mxPoint x="359" y="458" />
+              <mxPoint x="376" y="458" />
+              <mxPoint x="376" y="482" />
+              <mxPoint x="393" y="482" />
+              <mxPoint x="393" y="458" />
+              <mxPoint x="410" y="458" />
+              <mxPoint x="410" y="482" />
+              <mxPoint x="427" y="482" />
+              <mxPoint x="427" y="458" />
+              <mxPoint x="444" y="458" />
+              <mxPoint x="444" y="482" />
+              <mxPoint x="461" y="482" />
+              <mxPoint x="461" y="458" />
+              <mxPoint x="478" y="458" />
+              <mxPoint x="478" y="482" />
+              <mxPoint x="495" y="482" />
+              <mxPoint x="495" y="458" />
+              <mxPoint x="512" y="458" />
+              <mxPoint x="512" y="482" />
+              <mxPoint x="529" y="482" />
+              <mxPoint x="529" y="458" />
+              <mxPoint x="546" y="458" />
+              <mxPoint x="546" y="482" />
+              <mxPoint x="816" y="482" />
+              <mxPoint x="816" y="458" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c48" value="27 pulsos" style="text;html=1;fontSize=10;align=center;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="646" y="462" width="70" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c49" value="" style="html=1;endArrow=none;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="528" as="sourcePoint" />
+            <mxPoint x="240" y="552" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="220" y="528" />
+              <mxPoint x="220" y="552" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c50" value="1" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="240" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c51" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="274" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c52" value="1" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="308" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c53" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="342" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c54" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="376" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c55" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="410" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c56" value="0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="444" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c57" value="W=0" style="rounded=0;html=1;fontSize=9;fillColor=#e1d5e7;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="478" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c58" value="ACK" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="512" y="527" width="34" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c59" value="dir. alta + ACK" style="rounded=0;html=1;fontSize=9;fillColor=#f3e5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="546" y="527" width="90" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c60" value="dir. baja + ACK" style="rounded=0;html=1;fontSize=9;fillColor=#f3e5f5;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="636" y="527" width="90" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c61" value="dato + ACK" style="rounded=0;html=1;fontSize=9;fillColor=#d5e8d4;strokeColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="726" y="527" width="90" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="c62" value="" style="html=1;endArrow=none;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="816" y="552" as="sourcePoint" />
+            <mxPoint x="856" y="528" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="836" y="552" />
+              <mxPoint x="836" y="528" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c63" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="448" as="sourcePoint" />
+            <mxPoint x="220" y="565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c64" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="512" y="448" as="sourcePoint" />
+            <mxPoint x="512" y="565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c65" value="" style="html=1;endArrow=none;dashed=1;strokeColor=#1a5276;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="836" y="448" as="sourcePoint" />
+            <mxPoint x="836" y="565" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c66" value="START: SDA baja con SCL en alto" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="223" y="570" width="230" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c67" value="dirección 1010000 (0x50) + bit W" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="243" y="586" width="260" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c68" value="ACK: la EEPROM baja SDA" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="515" y="570" width="200" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c69" value="STOP: SDA sube con SCL en alto" style="text;html=1;fontSize=10;align=left;strokeColor=none;fillColor=none;fontColor=#1a5276;" vertex="1" parent="1">
+          <mxGeometry x="839" y="570" width="220" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c70" value="Durante un bit, SDA solo cambia con SCL en bajo; un cambio con SCL en alto es START o STOP · líneas open-drain con pull-up" style="text;html=1;fontSize=11;align=left;strokeColor=none;fillColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="422" width="900" height="16" as="geometry" />
+        </mxCell>
+        <mxCell id="c71" value="&lt;table style=&quot;border-collapse:collapse;font-size:11px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:50px;&quot;&gt;Paso&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:330px;&quot;&gt;Qué se envía&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:140px;&quot;&gt;Quién pone SDA&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;1&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;START&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro (FPGA)&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;2&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;1010 000 + W (0xA0)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro; ACK de la EEPROM&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;3&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Dirección interna alta (A15–A8)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro; ACK&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;4&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Dirección interna baja (A7–A0)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro; ACK&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;5&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Hasta 64 bytes de datos&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro; ACK por byte&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;6&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;STOP → la EEPROM graba ≈ 5 ms&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Maestro&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Leer&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;START, 0xA0, dir. alta, dir. baja, START repetido, 0xA1, datos (ACK… NACK en el último), STOP&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;La EEPROM pone los datos&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="420" width="520" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="c72" value="&lt;b style=&quot;font-size:14px&quot;&gt;SPI frente a I2C&lt;/b&gt;&lt;table style=&quot;border-collapse:collapse;font-size:11px;width:100%;&quot;&gt;&lt;tr&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:170px;&quot;&gt;&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:300px;&quot;&gt;SPI&lt;/th&gt;&lt;th style=&quot;background:#37474f;color:#fff;padding:4px 6px;border:1px solid #999;text-align:left;width:300px;&quot;&gt;I2C&lt;/th&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Hilos&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;4 (SCK, MOSI, MISO, CS) + 1 CS por dispositivo&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;2 (SCL, SDA) compartidos por todos&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Quién elige al dispositivo&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;La línea CS&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Una dirección de 7 bits en el primer byte&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Confirmación&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Ninguna&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;ACK en cada byte&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Velocidad usada&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;12,5 MHz&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;100 kHz&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#ffffff&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Salidas&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Push-pull&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;Open-drain + pull-ups&lt;/td&gt;&lt;/tr&gt;&lt;tr style=&quot;background:#f6f8fa&quot;&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;En la consola&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;SPI-RAM y Flash (rápidas, mucho dato)&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border:1px solid #bbb;vertical-align:top;&quot;&gt;EEPROM (poco dato, no volátil)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;strokeColor=none;fillColor=none;html=1;align=left;verticalAlign=top;whiteSpace=wrap;overflow=fill;spacing=6;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="640" width="940" height="200" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
