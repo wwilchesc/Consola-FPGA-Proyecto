@@ -1,0 +1,8 @@
+*.vcd
+*.vvp
+*.fs
+*.json
+build/
+*.o
+*.elf
+.DS_Store
