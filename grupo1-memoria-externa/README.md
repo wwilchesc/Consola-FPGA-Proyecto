@@ -28,7 +28,12 @@ _(Describir el periférico y su función dentro de la consola.)_
 
 ## Diseño
 
-_(Diagrama de bloques, diagrama de flujo, cálculos. Guardar los archivos en `docs/`.)_
+Diagramas de flujo (clic para abrirlos en draw.io):
+
+- [Diagrama de flujo desde el punto de vista del usuario](https://app.diagrams.net/#Hwwilchesc%2FConsola-FPGA-Proyecto%2Fmain%2Fgrupo1-memoria-externa%2Fdocs%2FGrupo1_Flujo_Usuario.drawio)
+- [Diagrama de flujo de lo que hace la máquina](https://app.diagrams.net/#Hwwilchesc%2FConsola-FPGA-Proyecto%2Fmain%2Fgrupo1-memoria-externa%2Fdocs%2FGrupo1_Flujo_Maquina.drawio)
+
+_(Agregar aquí diagrama de bloques y cálculos. Guardar los archivos en `docs/`.)_
 
 ## Registros
 
