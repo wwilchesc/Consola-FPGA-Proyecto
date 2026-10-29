@@ -4,9 +4,9 @@ Controladores de las memorias externas de la consola y la persistencia de los r�
 
 ## Integrantes
 
--
--
--
+- Wilman Wilches
+- David Eduardo Quiroga Vega
+- David Felipe Ibagué Arévalo
 
 ## Qué hace este grupo
 
