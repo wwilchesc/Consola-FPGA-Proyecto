@@ -1,56 +1,41 @@
 # Grupo 5 · Juego y menú
 
-Software de la consola: menú, máquina de estados y juegos. Corre en el procesador FemtoRV32 y usa los periféricos de los demás grupos a través del mapa de memoria.
+Firmware C sin sistema operativo para integrar con FemtoRV32 en Tang Nano 9K.
+Validado en Linux y compilado a objetos RV32I; **no probado en FPGA**.
 
-## Integrantes
+- **Nexo**: explorar el laberinto, recoger energía y evitar drones. Un jugador o
+  dos en cooperación, tres vidas compartidas y puntuación de equipo.
+- **Snake**: individual o competitivo de dos jugadores, un punto por alimento,
+  crecimiento hasta 128 segmentos, colisiones simultáneas y empate.
 
--
--
--
+## Controles abstractos
 
-## Qué hace este grupo
+| Contexto | Teclas |
+|---|---|
+| Menú: juego | Arriba/abajo o W/S |
+| Menú: jugadores | Izquierda/A = uno; derecha/D = dos |
+| Iniciar | Enter; 1/2 inician directamente el juego con la cantidad elegida |
+| Jugador 1 / jugador 2 | WASD / flechas (en individual, ambas controlan J1) |
+| Partida | P pausa/reanuda; R reinicia; Escape vuelve al menú |
+| Resultado | Enter repite; Escape vuelve al menú |
 
-_(Describir el menú, los juegos elegidos y cómo se juega.)_
+La selección inicial conserva dos jugadores. Las acciones detectan flancos:
+soltar la tecla antes de repetir. El adaptador PS/2 debe entregar teclas mantenidas.
 
-- Lenguaje: C (o ensamblador RISC-V)
-- Usa: teclado (grupo 2), pantalla (grupo 4), audio (grupo 3), récords (grupo 1), UART (grupo 6)
+## Verificación reproducible
 
-## Tareas
+```sh
+make test
+make demo
+make compare-html  # requiere Node.js; compara el canvas original
+make sanitize
+make size-rv32
+```
 
-- [ ] Definir los juegos y sus reglas
-- [ ] Diseñar el menú y la máquina de estados
-- [ ] Rutinas de dibujo (píxel, rectángulo, texto)
-- [ ] Lectura del teclado
-- [ ] Lógica de cada juego
-- [ ] Sonidos y récords
-- [ ] Probar en la demo o en simulación y luego en la placa
+`demo` genera PPM ampliados 6× sin interpolación en `build/`: menú, Nexo,
+Snake, pausa, Snake individual y resultado. PNG revisados en `docs/capturas/`.
+`size-rv32` requiere `riscv64-unknown-elf-gcc` (configurable con RISCV_CC),
+y produce objetos RV32I/ILP32; no una imagen arrancable.
 
-## Diseño
-
-_(Diagramas de flujo del menú y de cada juego. Guardar en `docs/`.)_
-
-## Juegos
-
-| Juego | Jugadores | Cómo se gana / pierde |
-| --- | --- | --- |
-| | | |
-
-## Controles
-
-| Tecla | Acción |
-| --- | --- |
-| | |
-
-## Cómo compilar y probar
-
-_(Comandos para compilar el firmware. Código en `firmware/`.)_
-
-## Avances
-
-| Fecha | Avance |
-| --- | --- |
-| | |
-
-## Pendientes y problemas
-
--
+Ver [diseño y memoria](docs/diseno.md), [integración](docs/contratos-MMIO.md)
+y [estado de la referencia HTML](docs/fidelidad-visual.md).

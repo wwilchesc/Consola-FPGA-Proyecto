@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consola FPGA — Demostración 64×64</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101419;--paper:#1b2229;--muted:#9ba9b4;--border:#354049;--accent:#ffe181;--green:#8ee4b0}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 5% 0%,#29413f55,transparent 55%),#101419;color:#edf0e9;font-family:system-ui,sans-serif;padding:36px 24px;min-height:100vh}
+    main{max-width:1120px;margin:auto}button,kbd,.eyebrow,.brand,.label,.specs,.game-number{font-family:ui-monospace,monospace}
+    .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--green);margin:0 0 16px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--border);padding-bottom:24px;margin-bottom:28px}h1{font-size:clamp(30px,5vw,54px);letter-spacing:-.06em;margin:0;font-weight:850}h1 span{color:var(--accent)}.sub{color:var(--muted);font-size:14px;line-height:1.6;margin:10px 0 0}.badge{white-space:nowrap;border:1px solid #526158;padding:10px 13px;border-radius:30px;font-size:11px;color:var(--green)}
+    .layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:start}
+    .screen-shell{background:linear-gradient(130deg,#3c454a,#252d32 60%);border:1px solid #667073;border-radius:24px 24px 38px 38px;padding:22px;box-shadow:0 24px 48px #0006,inset 0 2px #ffffff20,inset 0 -8px #0004}
+    .marquee{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:12px;font-weight:800;letter-spacing:.18em}.marquee span:last-child{color:var(--accent);font-family:monospace;font-size:10px;letter-spacing:.08em}
+    .bezel{padding:16px;background:#080b0d;border-radius:12px;border:1px solid #4d5659;box-shadow:inset 0 2px 8px #000;display:flex;justify-content:center}
+    canvas{display:block;width:100%;max-width:448px;aspect-ratio:1;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;background:#000}
+    .brand{display:flex;justify-content:space-between;gap:8px;margin-top:17px;color:#b9c3c5;font-size:9px;letter-spacing:.07em}.led{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 9px #8ee4b066;margin-right:7px}
+    .console-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px}.vents{width:88px;height:22px;background:repeating-linear-gradient(90deg,#11181c 0 4px,transparent 4px 9px)}.deco-buttons{display:flex;gap:12px}.deco-buttons i{height:20px;width:20px;border-radius:50%;background:var(--accent);box-shadow:0 4px #0006}.deco-buttons i:last-child{background:var(--green)}
+    .specs{display:flex;gap:16px;justify-content:center;color:var(--muted);font-size:10px;margin:18px 0}.panel{min-width:0}h2{font-size:17px;margin:0 0 6px;letter-spacing:-.02em}.tiny{font-size:12px;color:var(--muted);line-height:1.65;margin:0 0 16px}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.label{font-size:10px;color:var(--muted);letter-spacing:.13em}
+    .games{display:grid;gap:10px}button{appearance:none;cursor:pointer;color:inherit;font-size:12px;border:1px solid var(--border);background:#202830;border-radius:10px;padding:12px 16px;transition:background .18s,border-color .18s,transform .18s}button:hover{background:#303a42}button:active{transform:translateY(1px)}button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}button:disabled{opacity:.4;cursor:default}
+    .game{display:flex;gap:14px;text-align:left;align-items:center;padding:17px}.game[aria-pressed=true]{background:#ffe1810c;border-color:var(--accent)}.game-number{font-size:23px;color:var(--accent);font-weight:800}.game:nth-child(2) .game-number{color:var(--green)}.game strong{display:block;font-size:15px;letter-spacing:.06em}.game small{display:block;color:var(--muted);font-family:system-ui,sans-serif;font-size:12px;margin-top:5px}.game .arrow{margin-left:auto;color:var(--muted)}
+    .session{background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:16px;margin:16px 0}.state-row{display:flex;justify-content:space-between;align-items:center;gap:12px}#phase{font-size:10px;letter-spacing:.1em;color:var(--green)}#status{font-size:13px;line-height:1.5;margin:10px 0 14px;min-height:39px;color:#dee5dd}.scores{display:grid;grid-template-columns:1fr 1fr;gap:12px}.score{border-left:2px solid var(--accent);padding:0 0 0 10px}.score:last-child{border-color:var(--green)}.score strong{display:block;font:700 25px ui-monospace,monospace;margin:4px 0}.score small{color:var(--muted);font-size:11px}.shared{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:13px;font:11px ui-monospace,monospace;color:var(--accent)}
+    .buttons{display:flex;gap:8px;margin:14px 0 0}.primary{background:var(--accent);color:#1b2229;border-color:var(--accent);flex:1;font-weight:800}.primary:hover{background:#ffedaf}.controls{border-top:1px solid var(--border);padding-top:18px;margin-top:20px}.keyrows{display:grid;grid-template-columns:1fr 1fr;gap:10px}.keyrow{font-size:12px;line-height:2;margin:8px 0}.keyrow strong{display:block}.keyrow:first-child strong{color:var(--accent)}.keyrow:last-child strong{color:var(--green)}kbd{display:inline-block;min-width:25px;text-align:center;background:#252e35;border:1px solid #4d5a63;border-bottom:3px solid #4d5a63;border-radius:5px;font-size:11px;line-height:23px;padding:0 5px}.shortcuts{font-size:11px;color:var(--muted);line-height:2.6;margin:8px 0 0}
+    footer{border-top:1px solid var(--border);margin-top:28px;padding-top:20px;display:grid;grid-template-columns:1fr 1.5fr;gap:30px;color:var(--muted);font-size:11px;line-height:1.7}footer strong{color:#d5dedb;font-weight:600}.palette{display:inline-flex;gap:3px;vertical-align:middle;margin-left:8px}.palette i{width:8px;height:8px;border:1px solid #ffffff40}.session.changed{animation:arrive .25s ease-out}@keyframes arrive{from{transform:translateY(4px);opacity:.65}to{transform:translateY(0);opacity:1}}
+    @media(max-width:780px){body{padding:24px 16px}.layout{grid-template-columns:1fr}.screen-shell{width:100%;max-width:520px;margin:auto}.top{align-items:start}.badge{display:none}footer{grid-template-columns:1fr;gap:12px}.panel{max-width:520px;width:100%;margin:auto}}@media(max-width:380px){.screen-shell{padding:14px}.bezel{padding:8px}.buttons{flex-wrap:wrap}.brand{font-size:8px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    .player-picker{margin-top:16px}.player-picker h2{font-size:13px}.player-options{display:flex;gap:8px;margin:10px 0}.player-options button{flex:1;transition:transform .18s}.player-options button[aria-pressed=true]{background:var(--green);color:#101419;border-color:var(--green);font-weight:800}.game{transition:transform .18s}.game[aria-pressed=true]{background:var(--accent);color:#101419}.game[aria-pressed=true] small,.game[aria-pressed=true] .game-number,.game[aria-pressed=true] .arrow{color:#35402c}.menu-cursor{outline:3px solid #00ffff;outline-offset:3px}#second-score.inactive{opacity:.45}
+  </style>
+</head>
+<body>
+<main>
+  <header class="top"><div><p class="eyebrow">ELECTRÓNICA DIGITAL 1 / DEMO INTERACTIVA</p><h1>Pequeña matriz.<br>Gran <span>partida.</span></h1><p class="sub">Consola retro FPGA · Dos juegos, uno o dos jugadores, un mismo teclado.</p></div><span class="badge"><span class="led"></span>LOCAL · SIN INTERNET</span></header>
+  <section class="layout" aria-label="Consola y controles">
+    <div><div class="screen-shell"><div class="marquee"><span>RETRO / 64</span><span>FPGA ARCADE SYSTEM</span></div><div class="bezel"><canvas id="display" width="64" height="64" aria-label="Matriz LED virtual de 64 por 64 píxeles. Usa los controles indicados para jugar."></canvas></div><div class="brand"><span><span class="led"></span>TANG NANO 9K · CONCEPTO</span><span>64 × 64 / RGB 3-BIT</span></div><div class="console-bottom" aria-hidden="true"><div class="vents"></div><div class="deco-buttons"><i></i><i></i></div></div></div><div class="specs"><span>4.096 PÍXELES</span><span>8 COLORES</span><span>1–2 JUGADORES</span></div></div>
+    <div class="panel"><div class="section-title"><h2>Elige tu partida</h2><span class="label">01 / 02</span></div>
+      <div class="games"><button type="button" class="game" id="pac" aria-pressed="true"><span class="game-number">01</span><span><strong>PAC-MAN</strong><small>Solo o cooperativo · Tres vidas</small></span><span class="arrow" aria-hidden="true">↗</span></button><button type="button" class="game" id="snake" aria-pressed="false"><span class="game-number">02</span><span><strong>SNAKE</strong><small>Solo o competitivo · Come y sobrevive</small></span><span class="arrow" aria-hidden="true">↗</span></button></div>
+      <section class="player-picker" aria-label="Número de jugadores"><h2 id="menu-heading">1. Elige el juego</h2><div class="player-options"><button type="button" id="solo" aria-pressed="false">1 jugador</button><button type="button" id="duo" aria-pressed="true">2 jugadores</button></div><p class="tiny" id="menu-help">↑ ↓ eligen juego · Enter confirma</p></section>
+      <div class="session" id="session"><div class="state-row"><span class="label">ESTADO DE LA CONSOLA</span><strong id="phase">MENÚ</strong></div><p id="status" aria-live="polite"></p><div class="scores"><div class="score"><span class="label">JUGADOR 1 · AMARILLO</span><strong id="score1">000</strong><small id="player1">Listo para jugar</small></div><div class="score" id="second-score"><span class="label">JUGADOR 2 · VERDE</span><strong id="score2">000</strong><small id="player2">Listo para jugar</small></div></div><div class="shared"><span id="shared">VIDAS 3 / 3</span><span id="record">RÉCORD 000</span></div><div class="buttons"><button type="button" id="start" class="primary">Iniciar partida ↵</button><button type="button" id="pause" disabled>Pausa</button><button type="button" id="back">Menú</button></div></div>
+      <p class="tiny" id="rules">Recojan todos los puntos y eviten los dos fantasmas. La puntuación y las tres vidas son del equipo.</p>
+      <section class="controls" aria-label="Controles del teclado"><h2>Comparte el teclado</h2><div class="keyrows"><p class="keyrow"><strong>J1 / Amarillo</strong><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></p><p class="keyrow"><strong>J2 / Verde</strong><kbd>↑</kbd> <kbd>←</kbd> <kbd>↓</kbd> <kbd>→</kbd></p></div><p class="tiny" id="solo-help"></p><p class="shortcuts"><kbd>↑</kbd> <kbd>↓</kbd> navegar · <kbd>←</kbd> <kbd>→</kbd> elegir jugadores<br><kbd>1</kbd> <kbd>2</kbd> elegir · <kbd>Enter</kbd> iniciar / continuar<br><kbd>Esc</kbd> pausar; desde pausa o resultados, volver al menú</p></section>
+    </div>
+  </section>
+  <footer><div><strong>Diseñada para pensar en hardware.</strong><br>Tang Nano 9K · FemtoRV RISC-V · Arquitectura Von Neumann<br>Paleta RGB de 1 bit por canal <span class="palette" aria-label="Negro, azul, verde, cian, rojo, magenta, amarillo y blanco"><i style="background:#000"></i><i style="background:#00f"></i><i style="background:#0f0"></i><i style="background:#0ff"></i><i style="background:#f00"></i><i style="background:#f0f"></i><i style="background:#ff0"></i><i style="background:#fff"></i></span></div><div>Simulación de reglas y gráficos; no emula FemtoRV, memoria, tiempos de ejecución ni barrido HUB75. El teclado representa dos mandos locales. Los récords se guardan en este navegador, no en una EEPROM. La interfaz exterior no forma parte de la matriz LED.</div></footer>
+</main>
+<script>
+'use strict';
+// Demostración web del entregable A, NO implementación HDL/C para la placa.
+// Ocho colores: RGB con un bit por componente. El canvas siempre mide 64x64.
+const C = ['#000000','#0000ff','#00ff00','#00ffff','#ff0000','#ff00ff','#ffff00','#ffffff'];
+const cvs = document.getElementById('display');
+const cx = cvs.getContext('2d', {alpha:false});
+cx.imageSmoothingEnabled=false;
+const statusEl=document.getElementById('status');
+const dirs={w:[0,-1],s:[0,1],a:[-1,0],d:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+const FONT={
+ A:['010','101','111','101','101'],B:['110','101','110','101','110'],C:['011','100','100','100','011'],D:['110','101','101','101','110'],E:['111','100','110','100','111'],F:['111','100','110','100','100'],G:['011','100','101','101','011'],H:['101','101','111','101','101'],I:['111','010','010','010','111'],J:['001','001','001','101','010'],K:['101','101','110','101','101'],L:['100','100','100','100','111'],M:['101','111','111','101','101'],N:['101','111','111','111','101'],O:['010','101','101','101','010'],P:['110','101','110','100','100'],Q:['010','101','101','111','011'],R:['110','101','110','101','101'],S:['011','100','010','001','110'],T:['111','010','010','010','010'],U:['101','101','101','101','111'],V:['101','101','101','101','010'],W:['101','101','111','111','101'],X:['101','101','010','101','101'],Y:['101','101','010','010','010'],Z:['111','001','010','100','111'],
+ '0':['111','101','101','101','111'],'1':['010','110','010','010','111'],'2':['110','001','111','100','111'],'3':['110','001','011','001','110'],'4':['101','101','111','001','001'],'5':['111','100','110','001','110'],'6':['011','100','111','101','111'],'7':['111','001','001','001','001'],'8':['111','101','111','101','111'],'9':['111','101','111','001','110'],':':['000','010','000','010','000'],'-':['000','000','111','000','000'],' ':['000','000','000','000','000'],'+':['000','010','111','010','000']
+};
+function rect(x,y,w,h,c){cx.fillStyle=C[c];cx.fillRect(x,y,w,h)}
+function txt(message,x,y,col=7){const s=String(message).toUpperCase();for(let i=0;i<s.length;i++){const glyph=FONT[s[i]]||FONT[' '];for(let gy=0;gy<5;gy++)for(let gx=0;gx<3;gx++)if(glyph[gy][gx]==='1')rect(x+i*4+gx,y+gy,1,1,col)}}
+function center(message,y,col=7){txt(message,Math.floor((64-message.length*4+1)/2),y,col)}
+function safeGet(k){try{return +(localStorage.getItem(k)||0)}catch{return 0}}
+function safePut(k,n){try{localStorage.setItem(k,String(n))}catch{}}
+let best={pac1:safeGet('fpga-demo-pac1'),snake1:safeGet('fpga-demo-snake1'),pac:safeGet('fpga-demo-pac'),snake:safeGet('fpga-demo-snake')};
+let playerCount=2,menuStage='game';
+const recordKey=()=>selected+(playerCount===1?'1':'');
+let selected='pac',mode='menu',state=null,paused=false,last=0,acc=0,ticks=0;
+const key=(p)=>p.x+','+p.y;
+// Interfaz exterior: no altera los píxeles de la matriz.
+function setStatus(v){statusEl.textContent=v;const panel=document.getElementById('session');panel.classList.remove('changed');void panel.offsetWidth;panel.classList.add('changed')}
+function updateUI(){
+ const playing=mode==='play', pac=selected==='pac';
+ document.getElementById('phase').textContent=mode==='menu'?'MENÚ':mode==='end'?'RESULTADO':paused?'PAUSA':'EN JUEGO';
+ for(const id of ['pac','snake']){const button=document.getElementById(id);button.setAttribute('aria-pressed',String(selected===id));button.classList.toggle('menu-cursor',mode==='menu'&&menuStage==='game'&&selected===id)}
+ for(const [id,n] of [['solo',1],['duo',2]]){const button=document.getElementById(id);button.setAttribute('aria-pressed',String(playerCount===n));button.disabled=mode!=='menu';button.classList.toggle('menu-cursor',mode==='menu'&&menuStage==='players'&&playerCount===n)}
+ document.getElementById('menu-heading').textContent=menuStage==='game'?'1. Elige el juego':'2. Elige los jugadores';
+ document.getElementById('menu-help').textContent=menuStage==='game'?'↑ ↓ eligen juego · Enter confirma':'← → o ↑ ↓ eligen jugadores · Enter inicia · Esc vuelve';
+ document.getElementById('solo-help').textContent=playerCount===1?'Modo individual: usa WASD o las flechas. El jugador 2 está desactivado.':'Modo de dos jugadores: J1 usa WASD y J2 usa las flechas.';
+ document.getElementById('second-score').classList.toggle('inactive',playerCount===1);
+ document.getElementById('pause').disabled=!playing;
+ document.getElementById('pause').textContent=paused?'Continuar':'Pausa';
+ document.getElementById('start').textContent=playing?(paused?'Continuar ↵':'Reiniciar ↵'):mode==='end'?'Volver a jugar ↵':menuStage==='game'?'Elegir jugadores ↵':'Iniciar partida ↵';
+ for(let i=0;i<2;i++){
+  if(i>=playerCount){document.getElementById('score2').textContent='—';document.getElementById('player2').textContent='Desactivado';continue}
+  document.getElementById('score'+(i+1)).textContent=String(state?(pac?state.score:state.snakes[i].score):0).padStart(3,'0');
+  document.getElementById('player'+(i+1)).textContent=!state?'Listo para jugar':pac?(playerCount===1?'Tus puntos':'Puntos del equipo'):state.snakes[i].alive?'En la arena':'Fuera de juego';
+ }
+ document.getElementById('shared').textContent=pac?'VIDAS '+(state?state.lives:3)+' / 3': playerCount===1?'RETO INDIVIDUAL':'DUELO LOCAL';
+ document.getElementById('record').textContent='RÉCORD '+String(best[recordKey()]).padStart(3,'0');
+ document.getElementById('rules').textContent=playerCount===1?(pac?'Recoge todos los puntos y evita los dos fantasmas. Tienes tres vidas.':'Come para crecer y superar tu récord. La partida termina al chocar con un borde o tu cuerpo.'):pac?'Recojan todos los puntos y eviten los dos fantasmas. La puntuación y las tres vidas son del equipo.':'Coman para crecer. Chocar con un borde o un cuerpo elimina al jugador. Si ambos chocan en el mismo paso, hay empate.';
+}
+function togglePause(){if(mode!=='play')return;paused=!paused;acc=0;setStatus(paused?'Partida pausada. Enter continúa; Escape vuelve al menú.':'Partida en curso');draw()}
+// Generador de 16 bits reproducible: misma semilla + entradas = misma partida.
+let rng=0xace1;
+function randomInt(n){rng=(rng>>>1)^((rng&1)?0xb400:0);return rng%n}
+
+function menuStatus(){setStatus(menuStage==='game'?'Elige un juego con ↑ ↓ y confirma con Enter.':(selected==='pac'?'PAC-MAN':'Snake')+' · Elige 1 o 2 jugadores con las flechas y pulsa Enter.')}
+function choose(which){selected=which;mode='menu';menuStage='players';state=null;paused=false;menuStatus();draw()}
+function choosePlayers(n){if(mode!=='menu')return;playerCount=n;menuStage='players';menuStatus();draw()}
+function menu(){mode='menu';menuStage='game';state=null;paused=false;menuStatus();draw()}
+// Dos pasos de menú. La selección se refleja en el panel y en la matriz.
+function menuControls(k){
+ if(k==='Escape'){menu();return true}
+ if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(k)){
+  if(menuStage==='game')selected=selected==='pac'?'snake':'pac';
+  else playerCount=playerCount===1?2:1;
+  menuStatus();draw();return true;
+ }
+ if(k==='Enter'||k===' '){if(menuStage==='game'){menuStage='players';menuStatus();draw()}else start();return true}
+ return false;
+}
+function end(message,score){mode='end';paused=false;state.endMessage=message;
+ const bestKey=recordKey();if(score>best[bestKey]){best[bestKey]=score;safePut('fpga-demo-'+bestKey,score)}
+ setStatus(message+' · Récord: '+best[bestKey]);draw()}
+function start(){rng=0xace1;state=selected==='pac'?makePac():makeSnake();mode='play';paused=false;acc=0;ticks=0;setStatus((selected==='pac'?'PAC-MAN':'Snake')+' · '+playerCount+' jugador'+(playerCount===2?'es':'')+' · Partida en curso');draw()}
+function controls(event){const k=event.key.length===1?event.key.toLowerCase():event.key;
+ // En el menú, Enter confirma el paso activo incluso tras usar el ratón.
+ if(mode==='menu'&&(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter',' ','Escape'].includes(k))){event.preventDefault();if(!event.repeat)menuControls(k);return}
+ if(k==='Enter'&&event.target?.tagName==='BUTTON')return;
+ if(k in dirs || [' ','Enter','Escape','1','2','p','r'].includes(k))event.preventDefault();
+ if(event.repeat)return;
+ if(k==='1'){choose('pac');return}if(k==='2'){choose('snake');return}if(k==='r'){menu();return}
+ if(k==='Escape'){if(mode==='play'&&!paused)togglePause();else menu();return}
+ if(k==='Enter'||k===' '){if(paused)togglePause();else if(mode!=='play')start();return}
+ if(k==='p'){togglePause();return}
+ if(!(k in dirs)||mode!=='play'||paused)return;
+ const id=playerCount===2&&k.startsWith('Arrow')?1:0,d=dirs[k];
+ if(selected==='pac')state.want[id]=d;
+ else{const sn=state.snakes[id];if(sn.alive&&(sn.dir[0]+d[0]!==0||sn.dir[1]+d[1]!==0))sn.next=d}
+}
+addEventListener('keydown',controls);
+addEventListener('blur',()=>{if(mode==='play'&&!paused)togglePause()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='play'&&!paused)togglePause()});
+document.getElementById('pac').onclick=()=>choose('pac');
+document.getElementById('snake').onclick=()=>choose('snake');
+document.getElementById('solo').onclick=()=>choosePlayers(1);
+document.getElementById('duo').onclick=()=>choosePlayers(2);
+document.getElementById('start').onclick=()=>{if(mode==='menu'&&menuStage==='game'){menuStage='players';menuStatus();draw()}else if(paused)togglePause();else start()};
+document.getElementById('pause').onclick=togglePause;
+document.getElementById('back').onclick=menu;
+
+// PAC-MAN: laberinto lógico 16x14, representado con celdas de 4x4 píxeles.
+function makePac(){
+ const wall=Array.from({length:14},()=>Array(16).fill(false));
+ for(let y=0;y<14;y++)for(let x=0;x<16;x++)if(x===0||x===15||y===0||y===13)wall[y][x]=true;
+ for(let x=2;x<=5;x++){wall[4][x]=true;wall[9][x]=true}
+ for(let x=10;x<=13;x++){wall[4][x]=true;wall[9][x]=true}
+ for(let y of [2,3,10,11]){wall[y][7]=true;wall[y][8]=true}
+ const players=[{x:1,y:1},{x:14,y:12}].slice(0,playerCount), ghosts=[{x:7,y:6},{x:8,y:7}];
+ const dots=new Set();for(let y=1;y<13;y++)for(let x=1;x<15;x++)if(!wall[y][x])dots.add(x+','+y);
+ for(let a of [...players,...ghosts])dots.delete(key(a));
+ return {wall,players,ghosts,dots,score:0,lives:3,want:[[1,0],[-1,0]],dir:[[1,0],[-1,0]]}
+}
+function free(s,p){return p.x>=0&&p.x<16&&p.y>=0&&p.y<14&&!s.wall[p.y][p.x]}
+function resetPac(s){s.players=[{x:1,y:1},{x:14,y:12}].slice(0,playerCount);s.ghosts=[{x:7,y:6},{x:8,y:7}];s.want=[[1,0],[-1,0]];s.dir=[[1,0],[-1,0]]}
+// Las colisiones se comprueban tras cada fase: no se atraviesan fantasmas.
+function pacHit(s){if(!s.ghosts.some(g=>s.players.some(p=>key(p)===key(g))))return false;
+ s.lives--;if(s.lives<=0)end('Se agotaron las vidas',s.score);else resetPac(s);return true}
+function pacTick(){const s=state;
+ s.players.forEach((p,i)=>{
+  const wanted={x:p.x+s.want[i][0],y:p.y+s.want[i][1]};
+  if(free(s,wanted))s.dir[i]=s.want[i];
+  const next={x:p.x+s.dir[i][0],y:p.y+s.dir[i][1]};if(free(s,next))s.players[i]=next;
+ });
+ if(pacHit(s))return;
+ for(const p of s.players)if(s.dots.delete(key(p)))s.score++;
+ if(ticks%2===0)for(let g of s.ghosts){
+  const moves=[[0,-1],[0,1],[-1,0],[1,0]].map(d=>({x:g.x+d[0],y:g.y+d[1]})).filter(p=>free(s,p));
+  if(!moves.length)continue;
+  const target=s.players.reduce((best,p)=>Math.abs(p.x-g.x)+Math.abs(p.y-g.y)<Math.abs(best.x-g.x)+Math.abs(best.y-g.y)?p:best);
+  moves.sort((a,b)=>(Math.abs(a.x-target.x)+Math.abs(a.y-target.y))-(Math.abs(b.x-target.x)+Math.abs(b.y-target.y)));
+  const move=randomInt(4)!==0?moves[0]:moves[randomInt(moves.length)];g.x=move.x;g.y=move.y;
+ }
+ if(pacHit(s))return;
+ if(s.dots.size===0)end(playerCount===1?'¡Victoria!':'¡Victoria cooperativa!',s.score);
+}
+// Sprites enteros de 4×4; dos fotogramas, sin antialiasing.
+function pacSprite(p,i,d){const x=p.x*4,y=p.y*4,col=i===0?6:2;
+ rect(x+1,y,2,4,col);rect(x,y+1,4,2,col);
+ if(ticks%2===0)rect(x+(d[0]<0?0:d[0]>0?2:1),y+(d[1]<0?0:d[1]>0?2:1),d[0]?2:1,d[1]?2:1,0);
+}
+function drawPac(){const s=state;
+ for(let y=0;y<14;y++)for(let x=0;x<16;x++){
+  if(s.wall[y][x]){rect(x*4,y*4,4,4,1);if(y>0&&!s.wall[y-1][x])rect(x*4,y*4,4,1,3)}
+  else if(s.dots.has(x+','+y))rect(x*4+2,y*4+2,1,1,7);
+ }
+ s.ghosts.forEach((g,i)=>{const x=g.x*4,y=g.y*4;rect(x+1,y,2,1,i?5:4);rect(x,y+1,4,2,i?5:4);rect(x+(ticks%2),y+3,1,1,i?5:4);rect(x+2+(ticks%2),y+3,1,1,i?5:4);rect(x,y+1,1,1,7);rect(x+2,y+1,1,1,7)});
+ s.players.forEach((p,i)=>pacSprite(p,i,s.dir[i]));
+ // Un marcador cian identifica la casilla compartida por ambos jugadores.
+ if(s.players.length===2&&key(s.players[0])===key(s.players[1]))rect(s.players[0].x*4,s.players[0].y*4,1,1,3);
+ rect(0,56,64,8,0);txt('P:'+String(s.score%1000).padStart(3,'0'),0,58,7);txt('V:'+s.lives,36,58,6);
+}
+// SNAKE: arena 32x28, representada con celdas de 2x2 píxeles.
+function makeSnake(){const snakes=[{body:[{x:8,y:8},{x:7,y:8},{x:6,y:8}],dir:[1,0],next:[1,0],alive:true,score:0},
+ {body:[{x:23,y:19},{x:24,y:19},{x:25,y:19}],dir:[-1,0],next:[-1,0],alive:true,score:0}];
+ const s={snakes:snakes.slice(0,playerCount),food:null};spawnFood(s);return s}
+function spawnFood(s){const occupied=new Set(s.snakes.flatMap(z=>z.body.map(key)));const spaces=[];
+ for(let y=0;y<28;y++)for(let x=0;x<32;x++)if(!occupied.has(x+','+y))spaces.push({x,y});
+ s.food=spaces.length?spaces[randomInt(spaces.length)]:null}
+function snakeTick(){const s=state;const proposals=s.snakes.map(sn=>{if(!sn.alive)return null;sn.dir=sn.next;return{x:sn.body[0].x+sn.dir[0],y:sn.body[0].y+sn.dir[1]}});
+ const grow=proposals.map(p=>!!p&&!!s.food&&p.x===s.food.x&&p.y===s.food.y);
+ const dead=[false,false];
+ proposals.forEach((p,i)=>{if(!p)return;
+ if(p.x<0||p.x>=32||p.y<0||p.y>=28){dead[i]=true;return}
+ for(let j=0;j<s.snakes.length;j++){const other=s.snakes[j];const tailAllowed=!grow[j];const body=tailAllowed?other.body.slice(0,-1):other.body;
+ if(body.some(q=>q.x===p.x&&q.y===p.y)){dead[i]=true;break}}});
+ if(proposals[0]&&proposals[1]&&key(proposals[0])===key(proposals[1])){dead[0]=true;dead[1]=true}
+ proposals.forEach((p,i)=>{const sn=s.snakes[i];if(!sn.alive||dead[i]){if(dead[i])sn.alive=false;return}sn.body.unshift(p);if(grow[i])sn.score++;else sn.body.pop()});
+ if(grow.some((g,i)=>g&&!dead[i]))spawnFood(s);
+ if(s.snakes.length===1){const sn=s.snakes[0];if(!sn.alive)end('Fin del reto',sn.score);else if(!s.food)end('¡Victoria!',sn.score);return}
+ if(!s.snakes[0].alive||!s.snakes[1].alive){const alive=s.snakes.map(sn=>sn.alive);
+ const message=alive[0]?'Gana jugador 1':alive[1]?'Gana jugador 2':'Empate';
+ const maxScore=Math.max(...s.snakes.map(sn=>sn.score));end(message,maxScore)}
+ else if(!s.food){const [a,b]=s.snakes.map(sn=>sn.score);end(a===b?'Empate':a>b?'Gana jugador 1':'Gana jugador 2',Math.max(a,b))}
+}
+function drawSnake(){const s=state;
+ // Retícula discreta de baja resolución, sin colores intermedios.
+ for(let x=0;x<32;x++)for(let y=0;y<28;y++)if((x+y)%8===0)rect(x*2,y*2,1,1,1);
+ if(s.food)rect(s.food.x*2,s.food.y*2,2,2,4);
+ s.snakes.forEach((sn,i)=>{sn.body.forEach((p,j)=>{rect(p.x*2,p.y*2,2,2,i===0?6:2);if(j>0&&j%2===0)rect(p.x*2,p.y*2,1,1,0)});const h=sn.body[0];rect(h.x*2+(sn.dir[0]>0?1:0),h.y*2+(sn.dir[1]>0?1:0),1,1,7)});
+ rect(0,56,64,8,0);txt('1:'+String(s.snakes[0].score).padStart(2,'0'),0,58,6);if(s.snakes.length===2)txt('2:'+String(s.snakes[1].score).padStart(2,'0'),36,58,2);
+}
+function drawMenu(){
+ center('RETRO FPGA',3,6);rect(4,11,56,1,3);
+ if(menuStage==='game'){
+  center('ELIGE JUEGO',15,7);
+  rect(3,selected==='pac'?24:36,58,9,6);
+  center('1 PACMAN',26,selected==='pac'?0:7);
+  center('2 SNAKE',38,selected==='snake'?0:7);
+  center('ENTER ELEGIR',55,3);
+ }else{
+  center(selected==='pac'?'PACMAN':'SNAKE',15,7);
+  rect(3,playerCount===1?24:36,58,9,2);
+  center('1 JUGADOR',26,playerCount===1?0:7);
+  center('2 JUGADORES',38,playerCount===2?0:7);
+  center('ENTER JUGAR',55,3);
+ }
+}
+function drawResult(){const s=state;
+ center('FIN PARTIDA',9,6);
+ const msg=s.endMessage.toLowerCase();
+ if(msg.includes('jugador 1'))center('GANA J1',23,6);
+ else if(msg.includes('jugador 2'))center('GANA J2',23,2);
+ else if(msg.includes('empate'))center('EMPATE',23,7);
+ else if(msg.includes('victoria'))center(playerCount===1?'GANASTE':'GANARON',23,2);
+ else center(playerCount===1?'FIN DEL RETO':'PERDIERON',23,4);
+ center('RECORD',36,7);
+ center(String(best[recordKey()]).padStart(3,'0'),44,6);
+ center('ENTER REPETIR',57,2)
+}
+function draw(){updateUI();rect(0,0,64,64,0);
+ if(mode==='menu'){drawMenu();return}
+ if(mode==='end'){drawResult();return}
+ if(selected==='pac')drawPac();else drawSnake();
+ if(paused){rect(8,22,48,18,0);center('PAUSA',28,6)}
+}
+function loop(ts){if(!last)last=ts;const dt=Math.min(90,ts-last);last=ts;
+ if(mode==='play'&&!paused){acc+=dt;const step=selected==='pac'?130:155;
+ if(acc>=step){acc-=step;ticks++;if(selected==='pac')pacTick();else snakeTick();draw()}}
+ requestAnimationFrame(loop)}
+menu();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
